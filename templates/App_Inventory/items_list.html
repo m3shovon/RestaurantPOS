@@ -1,0 +1,11 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<h1>Item List</h1>
+<ul>
+    {% for item in items %}
+        <li>{{ item.title }} - {{ item.sku }} - ${{ item.selling_price }}</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'App_Inventory:add_item' %}">Add New Item</a>
+{% endblock %}

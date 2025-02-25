@@ -12,6 +12,6 @@ admin.site.register(models.Tag)
 
 admin.site.register(models.Items)
 
-admin.site.register(models.ItemVariation)
+# admin.site.register(models.ItemVariation)
 
 admin.site.register(models.ItemImage)
