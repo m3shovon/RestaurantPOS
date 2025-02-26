@@ -3,8 +3,9 @@ from .models import Category, Items
 from .forms import CategoryForm, ItemForm
 
 def category_list(request):
-    categories = Category.objects.all()
-    return render(request, 'App_Inventory/category_list.html', {'categories': categories})
+    main_categories = Category.objects.filter(Category_parent__isnull=True)  # Fetch only main categories
+    categories = Category.objects.all()  # Fetch all categories for the dropdown
+    return render(request, 'App_Inventory/category_list.html', {'main_categories': main_categories, 'categories': categories})
 
 def add_category(request):
     if request.method == 'POST':
@@ -14,7 +15,9 @@ def add_category(request):
             return redirect('App_Inventory:category_list')  
     else:
         form = CategoryForm()
-    return render(request, 'App_Inventory/category_list.html', {'form': form, 'categories': Category.objects.all()})
+    
+    categories = Category.objects.all()  # Fetch all categories for the dropdown
+    return render(request, 'App_Inventory/category_list.html', {'form': form, 'categories': categories})
 
 # Item Views
 def add_item(request):
@@ -25,8 +28,9 @@ def add_item(request):
             return redirect('App_Inventory:item_list')
     else:
         form = ItemForm()
-    return render(request, 'App_Inventory/item.html', {'form': form})
+    categories = Category.objects.all().filter(is_addons=False)
+    return render(request, 'App_Inventory/item.html', {'form': form, 'categories': categories})
 
 def item_list(request):
     items = Items.objects.all()
-    return render(request, 'App_Inventory/item_list.html', {'items': items})
+    return render(request, 'App_Inventory/items_list.html', {'items': items})

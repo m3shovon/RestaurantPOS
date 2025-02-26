@@ -1,0 +1,27 @@
+<table class="table table-borderless">
+    <tbody>
+        {% for child in children %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>
+                <span class="text-gray-9 ms-3">{{ child.name }}</span>
+                {% if child.category_set.all %}  
+                    <button class="btn btn-sm btn-toggle" data-bs-toggle="collapse" data-bs-target="#children-{{ child.id }}">
+                        <i class="ti ti-chevron-down"></i>
+                    </button>
+                {% endif %}
+            </td>
+            <td>{{ child.slug }}</td>
+            <td>{{ child.Category_parent }}</td>
+            <td><span class="badge bg-success fw-medium fs-10">{{ child.is_addons }}</span></td>
+        </tr>
+        {% if child.category_set.all %}
+        <tr class="collapse" id="children-{{ child.id }}">
+            <td colspan="5">
+                {% include 'App_Inventory/category_children.html' with children=child.category_set.all %}
+            </td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </tbody>
+</table>

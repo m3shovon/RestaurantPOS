@@ -1,6 +1,17 @@
 from django import forms
 from .models import Attribute, AttributeTerm, Category, Brand, Tag, Items, ItemImage
 
+# class CategoryForm(forms.ModelForm):
+#     Category_parent = forms.ModelChoiceField(
+#         queryset=Category.objects.all(), 
+#         required=False,
+#         empty_label="None",
+#         widget=forms.Select(attrs={'class': 'form-select'})
+#     )
+
+#     class Meta:
+#         model = Category
+#         fields = ['name', 'slug', 'is_addons', 'Category_parent']
 class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category

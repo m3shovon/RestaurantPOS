@@ -102,12 +102,22 @@ class Items(models.Model):
         return f"{self.title} | {self.sku}"
     
     def save(self, *args, **kwargs):
+
+        # Calculate discount_price
+        if self.discount is not None and self.selling_price is not None:
+            self.discount_price = self.selling_price + (self.selling_price * self.discount / 100)
+
+        # Slug generate 
         if not self.slug:
             self.slug = slugify(self.title)
             if Items.objects.filter(slug=self.slug).exists():
                 self.slug = f"{self.slug}-{uuid.uuid4().hex[:8]}" 
-
         super().save(*args, **kwargs)
+
+        # Generate barcode after the object is saved (to ensure ID is available)
+        if not self.barcode:
+            self.barcode = f"11000{self.id}{str(int(self.selling_price))}" 
+            super().save(update_fields=['barcode'])
     
 # class ItemVariation(models.Model):
 #     Item = models.ForeignKey(Items, on_delete=models.CASCADE, related_name="ItemVariation", related_query_name="ItemVariation")
