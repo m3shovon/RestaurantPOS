@@ -22,7 +22,7 @@ def is_admin(user):
 
 def admin_logout_view(request):
     logout(request)
-    return redirect('App_Auth:admin-login')  
+    return redirect('App_Auth:login')  
 
 def admin_login_view(request):
     if request.method == 'POST':
@@ -46,10 +46,10 @@ def admin_login_view(request):
 
 
 # dashboard
-@login_required(login_url='App_Auth:admin-login')
+@login_required(login_url='App_Auth:login')
 def dashboard(request):
     if not request.user.is_staff or not request.user.is_superuser:
         messages.error(request, 'Access denied. Admin only.')
-        return redirect('App_Auth:admin-login')
+        return redirect('App_Auth:login')
     
     return render(request, "App_Auth/dashboard.html")
