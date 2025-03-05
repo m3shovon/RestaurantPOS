@@ -5,6 +5,10 @@ import os
 from django.utils.text import slugify
 from Core import settings
 from App_Auth.models import CustomerProfile
+import barcode
+from barcode.writer import ImageWriter
+from django.core.files.base import ContentFile
+from io import BytesIO
 
 
 # Create your models here.
@@ -94,6 +98,7 @@ class Items(models.Model):
     Location = models.CharField(max_length=255, null=True, blank=True)
     action_details = models.CharField(max_length=255, null=True, blank=True)
     is_active = models.BooleanField(default=True)
+    barcode_image = models.ImageField(upload_to='barcodes/', null=True, blank=True)
 
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -102,22 +107,43 @@ class Items(models.Model):
         return f"{self.title} | {self.sku}"
     
     def save(self, *args, **kwargs):
-
         # Calculate discount_price
         if self.discount is not None and self.selling_price is not None:
-            self.discount_price = self.selling_price + (self.selling_price * self.discount / 100)
+            self.discount_price = self.selling_price - (self.selling_price * self.discount / 100)
 
-        # Slug generate 
+        # Slug generation
         if not self.slug:
             self.slug = slugify(self.title)
             if Items.objects.filter(slug=self.slug).exists():
                 self.slug = f"{self.slug}-{uuid.uuid4().hex[:8]}" 
-        super().save(*args, **kwargs)
 
-        # Generate barcode after the object is saved (to ensure ID is available)
+        # Save the instance first to generate an ID
+        if not self.pk:
+            super().save(*args, **kwargs)  
+
+        # Generate barcode after the object has an ID
+        updated_fields = []
         if not self.barcode:
-            self.barcode = f"11000{self.id}{str(int(self.selling_price))}" 
-            super().save(update_fields=['barcode'])
+            self.barcode = f"11000{self.id}{str(int(self.selling_price))}"
+            updated_fields.append('barcode')
+
+        # Save again only if barcode was updated
+        if updated_fields:
+            super().save(update_fields=updated_fields)
+
+        # Generate barcode image
+        self.generate_barcode_image()
+
+    def generate_barcode_image(self):
+        if self.barcode and not self.barcode_image:
+            barcode_class = barcode.get_barcode_class('code128')  
+            barcode_instance = barcode_class(self.barcode, writer=ImageWriter())
+
+            buffer = BytesIO()
+            barcode_instance.write(buffer)
+
+            self.barcode_image.save(f"barcode_{self.id}.png", ContentFile(buffer.getvalue()), save=False)
+            super().save(update_fields=['barcode_image'])  # Save only the image field
     
 # class ItemVariation(models.Model):
 #     Item = models.ForeignKey(Items, on_delete=models.CASCADE, related_name="ItemVariation", related_query_name="ItemVariation")

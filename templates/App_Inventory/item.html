@@ -25,7 +25,7 @@
             </div>
         </div>
 
-        <form method="post" action="{% url 'App_Inventory:add_item' %}" class="add-product-form">
+        <form method="post" action="{% url 'App_Inventory:add_item' %}" enctype="multipart/form-data" class="add-product-form">
             {% csrf_token %}
             <div class="add-product">
                 <div class="accordions-items-seperate" id="accordionSpacingExample">
@@ -123,7 +123,9 @@
                         <h2 class="accordion-header" id="headingSpacingThree">
                             <div class="accordion-button collapsed bg-white" data-bs-toggle="collapse" data-bs-target="#SpacingThree" aria-expanded="true" aria-controls="SpacingThree">
                                 <div class="d-flex align-items-center justify-content-between flex-fill">
-                                <h5 class="d-flex align-items-center"><i data-feather="image" class="text-primary me-2"></i><span>Images</span></h5>
+                                    <h5 class="d-flex align-items-center">
+                                        <i data-feather="image" class="text-primary me-2"></i><span>Images</span>
+                                    </h5>
                                 </div>
                             </div>
                         </h2>
@@ -133,22 +135,23 @@
                                     <div class="col-lg-12">
                                         <div class="add-choosen">
                                             <div class="mb-3">
-                                            <div class="image-upload image-upload-two">
-                                                    <input type="file">
+                                                <div class="image-upload image-upload-two">
+                                                    <input type="file" name="photos" multiple>  <!-- Updated name to 'photos' -->
                                                     <div class="image-uploads">
                                                         <i data-feather="plus-circle" class="plus-down-add me-0"></i>
                                                         <h4>Add Images</h4>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="phone-img">
-                                                <img src="assets/img/products/phone-add-2.png" alt="image">
-                                                <a href="javascript:void(0);"><i data-feather="x" class="x-square-add remove-product"></i></a>
-                                            </div>
-
-                                            <div class="phone-img">
-                                                <img src="assets/img/products/phone-add-1.png" alt="image">
-                                                <a href="javascript:void(0);"><i data-feather="x" class="x-square-add remove-product"></i></a>
+                                            <div class="uploaded-images">
+                                                {% if form.instance.pk %}  <!-- Only try to fetch images if the instance exists -->
+                                                    {% for image in form.instance.itemimage_set.all %}
+                                                        <div class="phone-img">
+                                                            <img src="{{ image.photo.url }}" alt="image">
+                                                            <a href="javascript:void(0);"><i data-feather="x" class="x-square-add remove-product"></i></a>
+                                                        </div>
+                                                    {% endfor %}
+                                                {% endif %}
                                             </div>
                                         </div>
                                     </div>

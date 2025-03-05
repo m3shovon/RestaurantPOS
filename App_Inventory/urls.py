@@ -11,6 +11,11 @@ urlpatterns = [
     # Item URLs
     path('item/add/', views.add_item, name='add_item'),
     path('item/list/', views.item_list, name='item_list'),
+
+    path('item/<int:pk>/', views.view_item, name='view_item'),
+    path('item/edit/<int:pk>/', views.edit_item, name='edit_item'),
+    path('item/delete/<int:pk>/', views.delete_item, name='delete_item'),
+    
 ]
 
 

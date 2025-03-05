@@ -1,0 +1,108 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="page-wrapper">
+    <div class="content">
+        <div class="page-header">
+            <div class="page-title">
+                <h4>Product Details</h4>
+                <h6>Full details of a product</h6>
+            </div>
+        </div>
+        <!-- /add -->
+        <div class="row">
+            <div class="col-lg-8 col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="productdetails">
+                            <ul class="product-bar">
+                                <li>
+                                    <h4>Title</h4>
+                                    <h6>{{ item.title }}	</h6>
+                                </li>
+                                <li>
+                                    <h4>SKU</h4>
+                                    <h6>{{ item.sku }}</h6>
+                                </li>
+                                <li>
+                                    <h4>Slug</h4>
+                                    <h6>{{ item.slug }}</h6>
+                                </li>
+                                <li>
+                                    <h4>Category</h4>
+                                    <h6>{{ item.Category }}</h6>
+                                </li>
+                                <li>
+                                    <h4>Price</h4>
+                                    <h6>{{ item.selling_price }}</h6>
+                                </li>
+                                <li>
+                                    <h4>Quantity</h4>
+                                    <h6>{{ item.quantity }}</h6>
+                                </li>
+                                <li>
+                                    <h4>Discount</h4>
+                                    <h6>{{ item.discount }}</h6>
+                                </li>
+                                <li>
+                                    <h4>Discount Price</h4>
+                                    <h6>{{ item.discount_price }}</h6>
+                                </li>    
+                            </ul>
+                        </div>
+                        <div class="bar-code-view">
+                            {% if item.barcode_image %}
+                                <img src="{{ item.barcode_image.url }}" alt="Barcode" style="width: 150px; height: 100px;">
+                            {% else %}
+                                <span>No Barcode</span>
+                            {% endif %}
+                            <a class="printimg">
+                                <img src="{% static 'assets/img/icons/printer.svg' %}" alt="print">
+                            </a>
+                        </div>
+                        <div>
+                            <a class="btn btn" href="{% url 'App_Inventory:edit_item' item.pk %}">Edit</a>
+                            <a class="btn btn" href="{% url 'App_Inventory:delete_item' item.pk %}" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="slider-product-details">
+                            <div class="owl-carousel owl-theme product-slide">
+                                <div class="slider-product">
+                                    {% for image in images %}
+                                        <img src="{{ image.photo.url }}" alt="{{ item.title }}" width="100">
+                                    {% empty %}
+                                        <p>No images available</p>
+                                    {% endfor %}
+                                    <h4 style="color: white;">{{ item.slug }}</h4>
+                                    <h6 style="color: white;">{{ item.title }}</h6>
+                                </div>
+                                <!-- <div class="slider-product">
+                                    <img src="assets/img/products/product69.jpg" alt="img">
+                                    <h4>macbookpro.jpg</h4>
+                                    <h6>581kb</h6>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+            
+        <!-- /add -->
+    </div>
+</div>
+
+
+
+
+
+
+
+{% endblock %}

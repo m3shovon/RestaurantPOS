@@ -31,7 +31,8 @@ class ItemForm(forms.ModelForm):
 class ItemImageForm(forms.ModelForm):
     class Meta:
         model = ItemImage
-        fields = '__all__'
+        fields = ['photo']
+
 
 
 # class BrandForm(forms.ModelForm):
