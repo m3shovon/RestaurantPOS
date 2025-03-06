@@ -9,7 +9,8 @@ class Invoice(models.Model):
         ('bank_transfer', 'Bank Transfer'),
         ('paypal', 'PayPal'),
     ]
-    
+    invoice_number = models.CharField(max_length=255, blank=True)
+    order_number = models.CharField(max_length=255, blank=True)
     payment_method = models.CharField(max_length=50, choices=PAYMENT_METHOD_CHOICES)
     payment_amount = models.DecimalField(max_digits=20, decimal_places=2)
     discount = models.DecimalField(max_digits=20, decimal_places=2, default=0)

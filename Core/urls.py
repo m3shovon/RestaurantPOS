@@ -10,6 +10,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('App_Auth.urls')),
     path('inventory/', include('App_Inventory.urls')),
+    path('sales/', include('App_Sales.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)

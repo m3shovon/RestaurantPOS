@@ -96,8 +96,8 @@
                     <h6 class="submenu-hdr">Sales</h6>
                     <ul>
                         <li><a href="#"><i class="ti ti-layout-grid fs-16 me-2"></i><span>Online Order</span></a></li>
-                        <li><a href="#"><i class="ti ti-file-invoice fs-16 me-2"></i><span>All Order</span></a></li>
-                        <li><a href="#"><i class="ti ti-device-laptop fs-16 me-2"></i><span>POS</span></a></li>
+                        <li><a href="{% url 'App_Sales:invoice_list' %}"><i class="ti ti-file-invoice fs-16 me-2"></i><span>All Order</span></a></li>
+                        <li><a href="{% url 'App_Sales:create_invoice' %}"><i class="ti ti-device-laptop fs-16 me-2"></i><span>POS</span></a></li>
                         <li><a href="#"><i class="ti ti-ticket fs-16 me-2"></i><span>Coupons</span></a></li>
                     </ul>
                 </li>
@@ -147,8 +147,8 @@
                     <a href="javascript:void(0);"><i class="ti ti-layout-grid fs-16 me-2"></i><span>Sales Order</span> <span class="menu-arrow"></span></a>
                     <ul>
                         <li><a href="javascript:void(0);"><span>Online Order</span></a></li>                        
-                        <li><a href="javascript:void(0);"><span>All Order</span></a></li>                        
-                        <li><a href="javascript:void(0);"><span>POS</span></a></li>                        
+                        <li><a href="{% url 'App_Sales:invoice_list' %}"><span>All Order</span></a></li>                        
+                        <li><a href="{% url 'App_Sales:create_invoice' %}"><span>POS</span></a></li>                        
                         <li><a href="javascript:void(0);"><span>Coupon</span></a></li>                        
                     </ul>
                 </li>
