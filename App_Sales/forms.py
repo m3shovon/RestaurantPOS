@@ -7,6 +7,11 @@ class InvoiceForm(forms.ModelForm):
         model = Invoice
         fields = ['payment_method', 'payment_amount', 'discount']
 
-class InvoiceItemForm(forms.Form):
-    item = forms.ModelChoiceField(queryset=Items.objects.all())
-    quantity = forms.IntegerField(min_value=1)
+class InvoiceItemForm(forms.ModelForm):
+    class Meta:
+        model = InvoiceItem
+        fields = ['item', 'quantity', 'price']
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['item'].queryset = Items.objects.all()  
